@@ -167,4 +167,5 @@ Disable this rule if the project intentionally consumes global Docusaurus theme 
 - [Infima docs](https://infima.dev/)
 
   </examples>
+
 </instructions>

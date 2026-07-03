@@ -76,22 +76,15 @@ export const createStylelintRule = <
         ...baseMeta,
         docs,
     };
-    const typedRuleMetadata: {
-        messages: M;
-        meta: Readonly<{ docs: StylelintRuleDocs }> & RuleMeta;
-        primaryOptionArray?: true;
-        ruleName: string;
-    } = {
-        messages,
-        meta,
-        ruleName,
-    };
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion -- Stylelint models plugin rules as callable functions with attached static metadata.
+    const typedRule = rule as Rule<P, S, M>;
 
+    typedRule.messages = messages;
+    typedRule.meta = meta;
+    typedRule.ruleName = ruleName;
     if (options.primaryOptionArray === true) {
-        typedRuleMetadata.primaryOptionArray = true;
+        typedRule.primaryOptionArray = true;
     }
-
-    const typedRule: Rule<P, S, M> = Object.assign(rule, typedRuleMetadata);
 
     const plugin = stylelint.createPlugin(ruleName, typedRule);
 

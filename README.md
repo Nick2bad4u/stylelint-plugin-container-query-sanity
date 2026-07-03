@@ -6,13 +6,13 @@ Stylelint rules and shareable configs for container query correctness: named-con
 
 ## Table of contents
 
-1. [Installation](#installation)
-2. [Quick start](#quick-start)
-3. [Exports](#exports)
-4. [Configs](#configs)
-5. [Rules](#rules)
-6. [Documentation](#documentation)
-7. [Contributors ✨](#contributors-)
+- [Installation](#installation)
+- [Quick start](#quick-start)
+- [Exports](#exports)
+- [Configs](#configs)
+- [Rules](#rules)
+- [Documentation](#documentation)
+- [Contributors ✨](#contributors-)
 
 ## Installation
 

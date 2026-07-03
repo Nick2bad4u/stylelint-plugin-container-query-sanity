@@ -28,8 +28,7 @@ export function loadBuiltRules(input?: {
         | ((modulePath: string) => Promise<
               Readonly<{
                   rules?:
-                      | Readonly<Record<string, ReadmeRuleModule>>
-                      | undefined;
+                      Readonly<Record<string, ReadmeRuleModule>> | undefined;
               }>
           >)
         | undefined;
@@ -42,11 +41,9 @@ export function generateReadmeRulesSectionFromRules(
 export function syncReadmeRulesTable(input: {
     readonly writeChanges: boolean;
     readonly loadRules?:
-        | (() => Promise<Readonly<Record<string, ReadmeRuleModule>>>)
-        | undefined;
+        (() => Promise<Readonly<Record<string, ReadmeRuleModule>>>) | undefined;
     readonly readFileFn?:
-        | ((filePath: string, encoding: "utf8") => Promise<string>)
-        | undefined;
+        ((filePath: string, encoding: "utf8") => Promise<string>) | undefined;
     readonly readmeFilePath?: string | undefined;
     readonly repositoryRootPath?: string | undefined;
     readonly rules?: Readonly<Record<string, ReadmeRuleModule>> | undefined;
@@ -62,7 +59,6 @@ export function syncReadmeRulesTable(input: {
 export function runCli(input?: {
     readonly cliArgs?: readonly string[] | undefined;
     readonly loadRules?:
-        | (() => Promise<Readonly<Record<string, ReadmeRuleModule>>>)
-        | undefined;
+        (() => Promise<Readonly<Record<string, ReadmeRuleModule>>>) | undefined;
     readonly repositoryRootPath?: string | undefined;
 }): Promise<void>;

@@ -1,7 +1,5 @@
 export type NodeVersionSyncResult =
-    | "updated"
-    | "validated"
-    | "validated-current";
+    "updated" | "validated" | "validated-current";
 
 export function normalizeNodeVersion(version: unknown): string;
 

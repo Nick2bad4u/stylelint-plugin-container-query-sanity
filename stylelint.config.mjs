@@ -6,6 +6,12 @@ const unsupportedExtends = new Set([
     "stylelint-plugin-font/configs/font-all",
     "stylelint-plugin-grid/configs/grid-all",
 ]);
+const unsupportedPlugins = new Set([
+    "stylelint-plugin-css-performance-budget",
+    "stylelint-plugin-docusaurus",
+    "stylelint-plugin-font",
+    "stylelint-plugin-grid",
+]);
 const unsupportedRulePrefixes = [
     "docusaurus/",
     "font/",
@@ -17,6 +23,11 @@ const normalizedExtends = Array.isArray(sharedConfig.extends)
           (entry) => typeof entry === "string" && !unsupportedExtends.has(entry)
       )
     : [];
+const normalizedPlugins = Array.isArray(sharedConfig.plugins)
+    ? sharedConfig.plugins.filter(
+          (entry) => typeof entry === "string" && !unsupportedPlugins.has(entry)
+      )
+    : sharedConfig.plugins;
 const sharedRules = sharedConfig.rules ?? {};
 const normalizedRules = Object.fromEntries(
     Object.entries(sharedRules).filter(([ruleName]) =>
@@ -50,6 +61,10 @@ const stylelintConfig = {
     extends: normalizedExtends,
     rules: normalizedRules,
 };
+
+if (normalizedPlugins !== undefined) {
+    stylelintConfig.plugins = normalizedPlugins;
+}
 
 if (normalizedOverrides !== undefined) {
     stylelintConfig.overrides = normalizedOverrides;

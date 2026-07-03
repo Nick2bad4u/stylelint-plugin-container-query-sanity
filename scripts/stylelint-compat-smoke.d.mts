@@ -101,8 +101,7 @@ export function runConfigScenario(
 export function runStylelintCompatSmoke(input?: {
     readonly argv?: readonly string[];
     readonly loadBuiltPluginSurfaceFn?:
-        | (() => Promise<BuiltPluginSurface>)
-        | undefined;
+        (() => Promise<BuiltPluginSurface>) | undefined;
     readonly loadStylelintFn?: (() => Promise<StylelintLike>) | undefined;
     readonly logger?: Pick<Console, "log"> | undefined;
     readonly stylelintRuntimeVersion?: string | undefined;

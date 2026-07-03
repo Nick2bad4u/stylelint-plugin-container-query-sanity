@@ -35,8 +35,7 @@ export function runCommand(input: {
 
 export function runStylelint16Compat(input?: {
     readonly copyFileFn?:
-        | typeof import("node:fs/promises").copyFile
-        | undefined;
+        typeof import("node:fs/promises").copyFile | undefined;
     readonly cpFn?: typeof import("node:fs/promises").cp | undefined;
     readonly mkdtempFn?: ((prefix: string) => Promise<string>) | undefined;
     readonly nodeCommand?: string | undefined;
