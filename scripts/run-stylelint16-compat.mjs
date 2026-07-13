@@ -195,6 +195,14 @@ export function runCommand({
 }) {
     const shouldUseWindowsCommandShell =
         process.platform === "win32" && shell === true;
+    // npm run exports user configuration as npm_config_* variables. npm 12
+    // rejects allow-scripts when that setting is relayed to a nested project
+    // install, so let the nested npm process reload it from the user config.
+    const childProcessEnvironment = Object.fromEntries(
+        Object.entries(process.env).filter(
+            ([name]) => name.toLowerCase() !== "npm_config_allow_scripts"
+        )
+    );
     const result = shouldUseWindowsCommandShell
         ? spawnSync(
               windowsCommandShell,
@@ -207,6 +215,7 @@ export function runCommand({
               ],
               {
                   cwd: targetRepositoryRootPath,
+                  env: childProcessEnvironment,
                   shell: false,
                   stdio: "inherit",
                   windowsHide: true,
@@ -214,6 +223,7 @@ export function runCommand({
           )
         : spawnSync(command, args, {
               cwd: targetRepositoryRootPath,
+              env: childProcessEnvironment,
               shell: false,
               stdio: "inherit",
               windowsHide: true,

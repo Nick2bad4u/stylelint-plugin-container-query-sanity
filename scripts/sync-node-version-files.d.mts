@@ -1,5 +1,7 @@
 export type NodeVersionSyncResult =
-    "updated" | "validated" | "validated-current";
+    | "updated"
+    | "validated"
+    | "validated-current";
 
 export function normalizeNodeVersion(version: unknown): string;
 
@@ -46,7 +48,10 @@ export function writeVersionFiles(input: {
 
 export function validateVersionFiles(input: {
     readonly expectedVersion: string | null;
-    readonly minimumEngineVersion?: string | null | undefined;
+    readonly minimumEngineVersion?:
+        | string
+        | null
+        | undefined;
     readonly logger?:
         | {
               readonly log: (...args: readonly unknown[]) => void;

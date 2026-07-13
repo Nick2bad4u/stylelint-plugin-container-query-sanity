@@ -2,8 +2,13 @@
     "$schema": "https://typedoc-plugin-markdown.org/schema.json",
     "coverageOutputPath": "static/img/coverage",
     "entryPointStrategy": "expand",
-    "entryPoints": ["../../src/plugin.ts", "../../src/_internal"],
-    "extends": ["typedoc-config-nick2bad4u/typedoc.json"],
+    "entryPoints": [
+        "../../src/plugin.ts",
+        "../../src/_internal"
+    ],
+    "extends": [
+        "typedoc-config-nick2bad4u/typedoc.json"
+    ],
     "gitRemote": "origin",
     "gitRevision": "main",
     "hostedBaseUrl": "https://nick2bad4u.github.io/stylelint-plugin-container-query-sanity/",

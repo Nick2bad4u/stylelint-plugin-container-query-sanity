@@ -14,7 +14,10 @@ export type ContainerQueryFeatureName =
     | "width";
 
 /** Supported container range features handled by this plugin. */
-export type ContainerSizeFeature = "block-size" | "inline-size" | "width";
+export type ContainerSizeFeature =
+    | "block-size"
+    | "inline-size"
+    | "width";
 
 /** One parsed range constraint extracted from a query condition. */
 export type FeatureConstraint = Readonly<{
@@ -42,7 +45,11 @@ export type ParsedContainerQuery = Readonly<{
 }>;
 
 /** Supported relational operators in range syntax. */
-export type RangeOperator = "<" | "<=" | ">" | ">=";
+export type RangeOperator =
+    | "<"
+    | "<="
+    | ">"
+    | ">=";
 
 type ParsedDimension = Readonly<{
     unit: string;

@@ -106,7 +106,14 @@ export type FooterContract = Readonly<{
  */
 export type SearchPluginContract = Readonly<{
     packageName: string;
-    requiredOptions?: Readonly<Record<string, boolean | number | string>>;
+    requiredOptions?: Readonly<
+        Record<
+            string,
+            | boolean
+            | number
+            | string
+        >
+    >;
 }>;
 
 /**

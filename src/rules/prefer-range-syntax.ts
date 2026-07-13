@@ -42,7 +42,10 @@ const docs = {
 } as const;
 
 type LegacyRangeDirection = "max" | "min";
-type LegacyRangeFeature = "block-size" | "inline-size" | "width";
+type LegacyRangeFeature =
+    | "block-size"
+    | "inline-size"
+    | "width";
 type ParsedLegacyRangeExpression = Readonly<{
     direction: LegacyRangeDirection;
     feature: LegacyRangeFeature;
