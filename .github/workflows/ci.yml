@@ -142,5 +142,14 @@ jobs:
             - name: "Install dependencies"
               run: "npm ci --force"
 
+            - name: "Install Actionlint"
+              env:
+                  GOBIN: "${{ runner.temp }}/actionlint/bin"
+              run: |
+                  set -euo pipefail
+                  mkdir -p "$GOBIN"
+                  go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.12
+                  echo "$GOBIN" >> "$GITHUB_PATH"
+
             - name: "Run full verification pipeline"
               run: "npm run release:verify"

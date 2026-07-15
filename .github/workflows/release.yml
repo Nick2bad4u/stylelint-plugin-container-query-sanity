@@ -166,6 +166,16 @@ jobs:
                   echo "::warning::Skipping 'Verify package' because workflow_dispatch input 'skip_verify' is true."
                   echo "::warning::Use this only when release checks were validated locally before dispatch."
 
+            - name: "Install Actionlint"
+              if: "${{ github.event_name != 'workflow_dispatch' || !inputs.skip_verify }}"
+              env:
+                  GOBIN: "${{ runner.temp }}/actionlint/bin"
+              run: |
+                  set -euo pipefail
+                  mkdir -p "$GOBIN"
+                  go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.12
+                  echo "$GOBIN" >> "$GITHUB_PATH"
+
             - name: "Verify package"
               if: "${{ github.event_name != 'workflow_dispatch' || !inputs.skip_verify }}"
               run: "npm run release:check"

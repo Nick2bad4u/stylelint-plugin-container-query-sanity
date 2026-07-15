@@ -11,6 +11,8 @@ import { untar } from "@andrewbranch/untar.js";
 import { Package, checkPackage } from "@arethetypeswrong/core";
 import { Gunzip } from "fflate";
 
+import { parseNpmPackMetadata } from "./_internal/npm-pack-metadata.mjs";
+
 /**
  * @typedef {Readonly<{ filename: string; fileData: Uint8Array }>} TarEntry
  */
@@ -176,16 +178,7 @@ const createPackTarball = () => {
         }
     );
 
-    const parsed = /** @type {{ filename?: string }[]} */ (
-        JSON.parse(packOutput)
-    );
-    const filename = parsed.at(0)?.filename;
-
-    if (typeof filename !== "string" || filename.length === 0) {
-        throw new Error("npm pack did not return a tarball filename.");
-    }
-
-    return filename;
+    return parseNpmPackMetadata(packOutput).filename;
 };
 
 /**
