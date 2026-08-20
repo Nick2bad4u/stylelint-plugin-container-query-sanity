@@ -83,6 +83,20 @@ describe("npm pack metadata parsing", () => {
         expect(() => parseNpmPackMetadata(packOutput)).toThrow(expectedMessage);
     });
 
+    it.each([
+        ["a parent traversal", "../example-package-1.0.0.tgz"],
+        ["a POSIX path", "nested/example-package-1.0.0.tgz"],
+        ["a Windows path", String.raw`nested\example-package-1.0.0.tgz`],
+        ["surrounding whitespace", " example-package-1.0.0.tgz "],
+        ["a non-tarball filename", "example-package-1.0.0.zip"],
+    ])("rejects %s in the filename", (_caseName, filename) => {
+        expect.hasAssertions();
+
+        expect(() =>
+            parseNpmPackMetadata(JSON.stringify([{ filename }]))
+        ).toThrow("filename must be a basename ending in .tgz");
+    });
+
     it("rejects an unsupported top-level shape", () => {
         expect.hasAssertions();
 

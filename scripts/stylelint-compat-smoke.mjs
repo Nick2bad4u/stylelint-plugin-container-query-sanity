@@ -22,10 +22,25 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import pc from "picocolors";
 
 const expectedStylelintMajorArgumentPrefix = "--expect-stylelint-major=";
+const installedPluginPackageName = "stylelint-plugin-container-query-sanity";
+const requestedPluginPackage = process.env["STYLELINT_COMPAT_PLUGIN_PACKAGE"];
+
+if (
+    requestedPluginPackage !== undefined &&
+    requestedPluginPackage !== installedPluginPackageName
+) {
+    throw new Error(
+        `Unsupported STYLELINT_COMPAT_PLUGIN_PACKAGE value: ${requestedPluginPackage}`
+    );
+}
+
 const builtPluginModuleUrl = new URL("../dist/plugin.js", import.meta.url);
 const builtPluginCjsPath = fileURLToPath(
     new URL("../dist/plugin.cjs", import.meta.url)
 );
+const builtPluginImportTarget =
+    requestedPluginPackage ?? builtPluginModuleUrl.href;
+const builtPluginRequireTarget = requestedPluginPackage ?? builtPluginCjsPath;
 
 /** @param {string} value */
 const isWindowsAbsolutePath = (value) => /^[A-Za-z]:[\\/]/u.test(value);
@@ -403,8 +418,8 @@ function createSurfaceSnapshot(candidate) {
  * @returns {Promise<BuiltPluginSurface>}
  */
 async function loadBuiltPluginSurface({
-    // eslint-disable-next-line no-unsanitized/method -- builtPluginModuleUrl is an internal fixed file URL under this repository
-    importModuleFn = () => import(builtPluginModuleUrl.href),
+    // eslint-disable-next-line no-unsanitized/method -- target is either the fixed package name or a fixed internal file URL
+    importModuleFn = () => import(builtPluginImportTarget),
     requireFn = createRequire(import.meta.url),
 } = {}) {
     try {
@@ -412,7 +427,7 @@ async function loadBuiltPluginSurface({
             /** @type {Readonly<Record<string, unknown>>} */ (
                 await importModuleFn()
             );
-        const builtPluginCjs = requireFn(builtPluginCjsPath);
+        const builtPluginCjs = requireFn(builtPluginRequireTarget);
 
         return {
             builtPluginCjs,
