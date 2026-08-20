@@ -93,19 +93,7 @@ const rule =
     };
 
 function sortLexicographically(values: readonly string[]): readonly string[] {
-    const sorted: string[] = [];
-
-    for (const value of values) {
-        const earlierValueIndex = sorted.findIndex(
-            (sortedValue) => value.localeCompare(sortedValue) < 0
-        );
-        const insertionIndex =
-            earlierValueIndex === -1 ? sorted.length : earlierValueIndex;
-
-        sorted.splice(insertionIndex, 0, value);
-    }
-
-    return sorted;
+    return values.toSorted((left, right) => left.localeCompare(right));
 }
 
 /** Detect conflicting static container-type declarations for one name. */

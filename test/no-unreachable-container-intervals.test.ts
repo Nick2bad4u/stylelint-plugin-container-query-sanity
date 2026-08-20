@@ -45,4 +45,37 @@ describe("container-query-sanity/no-unreachable-container-intervals", () => {
 
         expect(result.warnings).toHaveLength(0);
     });
+
+    it("ignores nested queries with different names, features, or units", async () => {
+        expect.hasAssertions();
+
+        const result = await lintWithConfig({
+            code: `
+                @container layout (width >= 60rem) {
+                    @container sidebar (width < 40rem) {
+                        .different-name { display: grid; }
+                    }
+                }
+
+                @container layout (width >= 60rem) {
+                    @container layout (inline-size < 40rem) {
+                        .different-feature { display: grid; }
+                    }
+                }
+
+                @container layout (width >= 60rem) {
+                    @container layout (width < 600px) {
+                        .different-unit { display: grid; }
+                    }
+                }
+            `,
+            config: {
+                rules: {
+                    "container-query-sanity/no-unreachable-container-intervals": true,
+                },
+            },
+        });
+
+        expect(result.warnings).toHaveLength(0);
+    });
 });

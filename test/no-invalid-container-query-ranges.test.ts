@@ -41,4 +41,23 @@ describe("container-query-sanity/no-invalid-container-query-ranges", () => {
 
         expect(result.warnings).toHaveLength(1);
     });
+
+    it("ignores empty parenthesized conditions", async () => {
+        expect.hasAssertions();
+
+        const result = await lintWithConfig({
+            code: `
+                @container layout (   ) {
+                    .card { display: grid; }
+                }
+            `,
+            config: {
+                rules: {
+                    "container-query-sanity/no-invalid-container-query-ranges": true,
+                },
+            },
+        });
+
+        expect(result.warnings).toHaveLength(0);
+    });
 });
