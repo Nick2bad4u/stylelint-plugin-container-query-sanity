@@ -74,25 +74,6 @@ const config = [
             "@typescript-eslint/no-unsafe-member-access": "off",
         },
     },
-
-    {
-        files: [
-            "knip.config.ts",
-            "plugin.d.mts",
-            "vitest.stryker.config.ts",
-        ],
-        languageOptions: {
-            parserOptions: {
-                projectService: {
-                    allowDefaultProject: [
-                        "*.{js,mjs,cjs,ts,mts}",
-                        "*.d.mts",
-                        ".*.{js,mjs,cjs,ts,mts}",
-                    ],
-                },
-            },
-        },
-    },
 ];
 
 export default config;

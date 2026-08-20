@@ -11,16 +11,11 @@ const sortLexicographically = (
     const sortedValues: string[] = [];
 
     for (const value of values) {
-        let insertionOffset = sortedValues.length;
-
-        for (const [index, sortedValue] of sortedValues.entries()) {
-            if (value.localeCompare(sortedValue) >= 0) {
-                continue;
-            }
-
-            insertionOffset = index;
-            break;
-        }
+        const earlierValueIndex = sortedValues.findIndex(
+            (sortedValue) => value.localeCompare(sortedValue) < 0
+        );
+        const insertionOffset =
+            earlierValueIndex === -1 ? sortedValues.length : earlierValueIndex;
 
         sortedValues.splice(insertionOffset, 0, value);
     }

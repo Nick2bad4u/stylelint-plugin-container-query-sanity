@@ -12,7 +12,7 @@ const whitespaceCharacterPattern = /^[\t\n\r ]$/v;
 
 /** Static declaration summary for one named container. */
 export type ContainerTypeSummary = Readonly<{
-    anchorNode: Declaration | undefined;
+    anchorNode?: Declaration;
     declarations: readonly string[];
     hasBlockSizeContainment: boolean;
     hasInlineSizeContainment: boolean;
@@ -23,7 +23,7 @@ export type ContainerTypeSummary = Readonly<{
 }>;
 
 interface MutableContainerTypeSummary {
-    anchorNode: Declaration | undefined;
+    anchorNode?: Declaration;
     declarations: string[];
     hasBlockSizeContainment: boolean;
     hasInlineSizeContainment: boolean;
@@ -174,7 +174,6 @@ export function splitWhitespaceTokens(value: string): readonly string[] {
 
 function createEmptySummary(): MutableContainerTypeSummary {
     return {
-        anchorNode: undefined,
         declarations: [],
         hasBlockSizeContainment: false,
         hasInlineSizeContainment: false,
@@ -187,7 +186,6 @@ function createEmptySummary(): MutableContainerTypeSummary {
 
 function createNormalSummary(): ContainerTypeSummary {
     return {
-        anchorNode: undefined,
         declarations: ["normal"],
         hasBlockSizeContainment: false,
         hasInlineSizeContainment: false,
@@ -200,7 +198,6 @@ function createNormalSummary(): ContainerTypeSummary {
 
 function createUnknownSummary(declaration: string): ContainerTypeSummary {
     return {
-        anchorNode: undefined,
         declarations: [declaration],
         hasBlockSizeContainment: false,
         hasInlineSizeContainment: false,
@@ -273,8 +270,8 @@ function parseContainerShorthand(value: string): Readonly<{
 
     if (
         namePart === "" ||
-        setHas(cssWideKeywords, lowercaseNamePart) ||
-        lowercaseNamePart === "none"
+        lowercaseNamePart === "none" ||
+        setHas(cssWideKeywords, lowercaseNamePart)
     ) {
         return {
             names: [],
@@ -339,7 +336,6 @@ function parseContainerTypeValue(value: string): ContainerTypeSummary | null {
     }
 
     return {
-        anchorNode: undefined,
         declarations: [lowercaseValue],
         hasBlockSizeContainment: arrayIncludes(tokens, "size"),
         hasInlineSizeContainment:

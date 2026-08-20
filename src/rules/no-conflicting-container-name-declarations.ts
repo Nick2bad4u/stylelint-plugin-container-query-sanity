@@ -96,16 +96,11 @@ function sortLexicographically(values: readonly string[]): readonly string[] {
     const sorted: string[] = [];
 
     for (const value of values) {
-        let insertionIndex = sorted.length;
-
-        for (const [index, sortedValue] of sorted.entries()) {
-            if (value.localeCompare(sortedValue) >= 0) {
-                continue;
-            }
-
-            insertionIndex = index;
-            break;
-        }
+        const earlierValueIndex = sorted.findIndex(
+            (sortedValue) => value.localeCompare(sortedValue) < 0
+        );
+        const insertionIndex =
+            earlierValueIndex === -1 ? sorted.length : earlierValueIndex;
 
         sorted.splice(insertionIndex, 0, value);
     }

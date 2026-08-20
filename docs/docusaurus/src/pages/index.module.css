@@ -500,7 +500,7 @@
 
 @media (width <= 996px) {
     .heroGrid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .heroPanel {
@@ -521,7 +521,7 @@
     .heroBadgeRow,
     .heroStats,
     .cardGrid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .heroActions {
