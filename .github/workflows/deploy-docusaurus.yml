@@ -54,8 +54,16 @@ jobs:
                   cache: "npm"
                   cache-dependency-path: "package-lock.json"
 
+            - name: "Setup repository npm version"
+              run: |
+                  set -euo pipefail
+                  expected_npm=$(node -p "require('./package.json').packageManager.split('@').at(-1)")
+                  npm install --global "npm@${expected_npm}"
+                  actual_npm=$(npm --version)
+                  test "$actual_npm" = "$expected_npm"
+
             - name: "Install dependencies"
-              run: "npm ci --force"
+              run: "npm ci"
 
             - name: "Build before TypeDoc"
               run: "npm run build"
