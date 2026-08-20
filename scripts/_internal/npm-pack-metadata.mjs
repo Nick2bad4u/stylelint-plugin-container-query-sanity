@@ -54,7 +54,22 @@ const normalizeNpmPackMetadata = (metadata) => {
         );
     }
 
-    return { filename: entry.filename };
+    const filename = entry.filename.trim();
+
+    if (
+        filename !== entry.filename ||
+        filename === "." ||
+        filename === ".." ||
+        filename.includes("/") ||
+        filename.includes("\\") ||
+        !filename.endsWith(".tgz")
+    ) {
+        throw new TypeError(
+            "ATTW pack check failed: npm pack --json filename must be a basename ending in .tgz."
+        );
+    }
+
+    return { filename };
 };
 
 /**

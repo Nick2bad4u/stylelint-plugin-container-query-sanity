@@ -2,7 +2,7 @@
  * @packageDocumentation
  * Rule validating contradictory or mixed-unit container query intervals.
  */
-import type { Root } from "postcss";
+import type { AtRule, Root } from "postcss";
 
 import stylelint, { type PostcssResult } from "stylelint";
 import { arrayJoin, isDefined, isEmpty } from "ts-extras";
@@ -57,29 +57,6 @@ const formatBound = (
 ): string =>
     `${bound.inclusive ? "[" : "("}${String(bound.value)}${bound.unit}`;
 
-const sortLexicographically = (
-    values: readonly string[]
-): readonly string[] => {
-    const sortedValues: string[] = [];
-
-    for (const value of values) {
-        let insertionOffset = sortedValues.length;
-
-        for (const [index, sortedValue] of sortedValues.entries()) {
-            if (value.localeCompare(sortedValue) >= 0) {
-                continue;
-            }
-
-            insertionOffset = index;
-            break;
-        }
-
-        sortedValues.splice(insertionOffset, 0, value);
-    }
-
-    return sortedValues;
-};
-
 const rule =
     (primary: boolean) =>
     (root: Readonly<Root>, result: Readonly<PostcssResult>) => {
@@ -103,7 +80,12 @@ const rule =
             const grouped = groupConstraintsByFeatureAndUnit(constraints);
 
             for (const [feature, byUnit] of grouped) {
-                const unitKeys = sortLexicographically([...byUnit.keys()]);
+                const unitEntries = [...byUnit];
+                const sortedUnitEntries = unitEntries.toSorted(
+                    ([leftUnit], [rightUnit]) =>
+                        leftUnit.localeCompare(rightUnit)
+                );
+                const unitKeys = sortedUnitEntries.map(([unit]) => unit);
 
                 if (unitKeys.length > 1) {
                     report({
@@ -117,35 +99,47 @@ const rule =
                     });
                 }
 
-                for (const unit of unitKeys) {
-                    const sameUnitConstraints = byUnit.get(unit);
-
-                    if (isDefined(sameUnitConstraints)) {
-                        const interval = normalizeInterval(sameUnitConstraints);
-                        const lower = interval.lower;
-                        const upper = interval.upper;
-
-                        if (
-                            isIntervalEmpty(interval) &&
-                            isDefined(lower) &&
-                            isDefined(upper)
-                        ) {
-                            report({
-                                message: messages.unreachableRange(
-                                    feature,
-                                    formatBound(lower),
-                                    `${formatBound(upper)}]`
-                                ),
-                                node: atRule,
-                                result,
-                                ruleName,
-                            });
-                        }
-                    }
+                for (const [, sameUnitConstraints] of sortedUnitEntries) {
+                    reportEmptyInterval({
+                        atRule,
+                        constraints: sameUnitConstraints,
+                        feature,
+                        result,
+                    });
                 }
             }
         });
     };
+
+function reportEmptyInterval({
+    atRule,
+    constraints,
+    feature,
+    result,
+}: Readonly<{
+    atRule: AtRule;
+    constraints: Parameters<typeof normalizeInterval>[0];
+    feature: string;
+    result: Readonly<PostcssResult>;
+}>): void {
+    const interval = normalizeInterval(constraints);
+    const { lower, upper } = interval;
+
+    if (!isIntervalEmpty(interval) || !isDefined(lower) || !isDefined(upper)) {
+        return;
+    }
+
+    report({
+        message: messages.unreachableRange(
+            feature,
+            formatBound(lower),
+            `${formatBound(upper)}]`
+        ),
+        node: atRule,
+        result,
+        ruleName,
+    });
+}
 
 /** Disallow contradictory and mixed-unit intervals in container queries. */
 const noInvalidContainerQueryRangesRule: StylelintPluginRuleContract =

@@ -1,6 +1,7 @@
 import type { SidebarsConfig } from "@docusaurus/plugin-content-docs";
 
 const packageName = "stylelint-plugin-container-query-sanity";
+const generatedIndexType = "generated-index" as const;
 
 const sidebars: SidebarsConfig = {
     rules: [
@@ -67,7 +68,7 @@ const sidebars: SidebarsConfig = {
                 description: `Migration and release-readiness guidance for ${packageName}.`,
                 slug: "/category/adoption--rollout",
                 title: "Adoption & Rollout",
-                type: "generated-index",
+                type: generatedIndexType,
             },
             type: "category",
         },
@@ -110,7 +111,7 @@ const sidebars: SidebarsConfig = {
                             "Rules that keep named container declarations and queries aligned.",
                         slug: "/category/named-container-contracts",
                         title: "Named Container Contracts",
-                        type: "generated-index",
+                        type: generatedIndexType,
                     },
                     type: "category",
                 },
@@ -146,7 +147,7 @@ const sidebars: SidebarsConfig = {
                             "Rules that catch invalid, unreachable, or low-signal container query ranges.",
                         slug: "/category/query-range-sanity",
                         title: "Query Range Sanity",
-                        type: "generated-index",
+                        type: generatedIndexType,
                     },
                     type: "category",
                 },
@@ -182,7 +183,7 @@ const sidebars: SidebarsConfig = {
                             "Rules that verify query features match declared container capabilities.",
                         slug: "/category/containment--feature-matching",
                         title: "Containment & Feature Matching",
-                        type: "generated-index",
+                        type: generatedIndexType,
                     },
                     type: "category",
                 },
@@ -203,7 +204,7 @@ const sidebars: SidebarsConfig = {
                             "Rules that keep query thresholds tied to approved design tokens.",
                         slug: "/category/breakpoint-token-discipline",
                         title: "Breakpoint Token Discipline",
-                        type: "generated-index",
+                        type: generatedIndexType,
                     },
                     type: "category",
                 },
@@ -214,7 +215,7 @@ const sidebars: SidebarsConfig = {
                     "Rule documentation for every container-query-sanity rule.",
                 slug: "/",
                 title: "Rule Reference",
-                type: "generated-index",
+                type: generatedIndexType,
             },
             type: "category",
         },

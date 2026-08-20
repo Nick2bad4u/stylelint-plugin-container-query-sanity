@@ -143,6 +143,13 @@ export function extractParenthesizedExpressions(
     condition: string
 ): readonly string[] {
     const expressions: string[] = [];
+    const appendExpression = (candidate: string): void => {
+        const expression = candidate.trim();
+
+        if (expression !== "") {
+            expressions.push(expression);
+        }
+    };
     let depth = 0;
     let expressionStart = -1;
 
@@ -155,18 +162,14 @@ export function extractParenthesizedExpressions(
             }
 
             depth += 1;
-        } else if (character === ")" && depth > 0) {
+            continue;
+        }
+
+        if (character === ")" && depth > 0) {
             depth -= 1;
 
             if (depth === 0 && expressionStart >= 0) {
-                const expression = condition
-                    .slice(expressionStart, index)
-                    .trim();
-
-                if (expression !== "") {
-                    expressions.push(expression);
-                }
-
+                appendExpression(condition.slice(expressionStart, index));
                 expressionStart = -1;
             }
         }
@@ -236,8 +239,8 @@ export function hasQueryFunctionCondition(
             const nextCharacter = normalizedCondition[nextIndex];
 
             if (
-                !isIdentifierCharacterOrHyphen(previousCharacter) &&
-                nextCharacter === "("
+                nextCharacter === "(" &&
+                !isIdentifierCharacterOrHyphen(previousCharacter)
             ) {
                 return true;
             }
@@ -249,8 +252,7 @@ export function hasQueryFunctionCondition(
 
 /** Return true when an interval cannot match any value. */
 export function isIntervalEmpty(interval: FeatureInterval): boolean {
-    const lower = interval.lower;
-    const upper = interval.upper;
+    const { lower, upper } = interval;
 
     if (!isDefined(lower) || !isDefined(upper)) {
         return false;

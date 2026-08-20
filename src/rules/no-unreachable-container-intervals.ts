@@ -79,9 +79,9 @@ const rule =
             const currentContainerName = parsedCurrent.containerName;
 
             if (
+                parentContainerName !== currentContainerName &&
                 isDefined(parentContainerName) &&
-                isDefined(currentContainerName) &&
-                parentContainerName !== currentContainerName
+                isDefined(currentContainerName)
             ) {
                 return;
             }
@@ -102,25 +102,26 @@ const rule =
             for (const [feature, currentByUnit] of currentByFeature) {
                 const parentByUnit = parentByFeature.get(feature);
 
-                if (isDefined(parentByUnit)) {
-                    for (const [
-                        unit,
-                        currentUnitConstraints,
-                    ] of currentByUnit) {
-                        const parentUnitConstraints = parentByUnit.get(unit);
+                if (!isDefined(parentByUnit)) {
+                    continue;
+                }
 
-                        if (isDefined(parentUnitConstraints)) {
-                            reportIfDisjoint({
-                                atRule,
-                                currentUnitConstraints,
-                                feature,
-                                parentUnitConstraints,
-                                result,
-                                ruleName,
-                                unit,
-                            });
-                        }
+                for (const [unit, currentUnitConstraints] of currentByUnit) {
+                    const parentUnitConstraints = parentByUnit.get(unit);
+
+                    if (!isDefined(parentUnitConstraints)) {
+                        continue;
                     }
+
+                    reportIfDisjoint({
+                        atRule,
+                        currentUnitConstraints,
+                        feature,
+                        parentUnitConstraints,
+                        result,
+                        ruleName,
+                        unit,
+                    });
                 }
             }
         });

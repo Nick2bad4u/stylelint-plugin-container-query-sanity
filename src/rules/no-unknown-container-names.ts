@@ -115,7 +115,7 @@ const rule =
         const whenNoDeclarations =
             secondaryOptions.whenNoDeclarations ?? "ignore";
 
-        if (isEmpty(declaredNamesList) && whenNoDeclarations === "ignore") {
+        if (whenNoDeclarations === "ignore" && isEmpty(declaredNamesList)) {
             return;
         }
 
@@ -223,8 +223,8 @@ function extractNamesFromContainerShorthandValue(
     const lowercaseNameSection = nameSection.toLowerCase();
 
     if (
-        setHas(cssWideKeywords, lowercaseNameSection) ||
-        lowercaseNameSection === "none"
+        lowercaseNameSection === "none" ||
+        setHas(cssWideKeywords, lowercaseNameSection)
     ) {
         return [];
     }

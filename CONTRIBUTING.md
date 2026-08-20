@@ -7,7 +7,7 @@ This repository contains a Stylelint plugin template focused on Docusaurus styli
 ## Prerequisites
 
 - Node.js `>=22.0.0` (see `package.json#engines`)
-- npm `>=11`
+- npm `12.0.2` (see `package.json#packageManager`)
 - Git
 
 ## Local setup
@@ -17,7 +17,7 @@ This repository contains a Stylelint plugin template focused on Docusaurus styli
 2. Install dependencies from the repository root:
 
    ```bash
-   npm ci --force
+   npm ci
    ```
 
 3. Run the main quality gate:
