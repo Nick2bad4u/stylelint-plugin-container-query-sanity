@@ -49,20 +49,27 @@ jobs:
             - name: "Checkout repository"
               uses: "actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0" # v7.0.0
 
-            - name: "Setup Node.js"
+            - name: "Setup Node.js runtime"
               uses: "actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e" # v6.4.0
               with:
                   node-version-file: ".node-version"
-                  cache: "npm"
-                  cache-dependency-path: "package-lock.json"
 
             - name: "Setup repository npm version"
               run: |
                   set -euo pipefail
                   expected_npm=$(node -p "require('./package.json').packageManager.split('@').at(-1)")
+                  pushd "$RUNNER_TEMP" >/dev/null
                   npm install --global "npm@${expected_npm}"
+                  popd >/dev/null
                   actual_npm=$(npm --version)
                   test "$actual_npm" = "$expected_npm"
+
+            - name: "Configure npm dependency cache"
+              uses: "actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e" # v6.4.0
+              with:
+                  node-version-file: ".node-version"
+                  cache: "npm"
+                  cache-dependency-path: "package-lock.json"
 
             - name: "Install dependencies"
               run: "npm ci"
@@ -140,20 +147,27 @@ jobs:
             - name: "Checkout repository"
               uses: "actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0" # v7.0.0
 
-            - name: "Setup Node.js"
+            - name: "Setup Node.js runtime"
               uses: "actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e" # v6.4.0
               with:
-                  cache: "npm"
-                  cache-dependency-path: "package-lock.json"
                   node-version-file: ".node-version"
 
             - name: "Setup repository npm version"
               run: |
                   set -euo pipefail
                   expected_npm=$(node -p "require('./package.json').packageManager.split('@').at(-1)")
+                  pushd "$RUNNER_TEMP" >/dev/null
                   npm install --global "npm@${expected_npm}"
+                  popd >/dev/null
                   actual_npm=$(npm --version)
                   test "$actual_npm" = "$expected_npm"
+
+            - name: "Configure npm dependency cache"
+              uses: "actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e" # v6.4.0
+              with:
+                  node-version-file: ".node-version"
+                  cache: "npm"
+                  cache-dependency-path: "package-lock.json"
 
             - name: "Install dependencies"
               run: "npm ci"
