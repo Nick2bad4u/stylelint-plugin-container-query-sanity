@@ -1,4 +1,5 @@
 # yaml-language-server: $schema=https://www.schemastore.org/pull-request-labeler.json
+#
 # =============================================================================
 # PR Labeler Configuration
 # =============================================================================
@@ -7,6 +8,12 @@
 # It also serves as the *source of label names* if you choose.
 # actions/labeler does not inspect PR titles or bodies. Keyword-based labels
 # therefore match the repository's required type/description head branches.
+
+# Limit changed-files based labels to 5
+changed-files-labels-limit: 5
+
+# Limit changed-files based labels to 100 files changed (default is 1000)
+max-files-changed: 100
 
 CI/CD:
     - changed-files:
